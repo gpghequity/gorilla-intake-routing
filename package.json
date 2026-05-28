@@ -1,0 +1,31 @@
+﻿{
+    "name":  "gorilla-intake-routing",
+    "version":  "0.1.0",
+    "private":  true,
+    "description":  "Gorilla Realty branded intake + routing app â€” buyers, sellers/deals, agent recruitment",
+    "main":  "index.js",
+    "scripts":  {
+                    "start":  "node index.js",
+                    "dev":  "node index.js",
+                    "test":  "vitest run"
+                },
+    "dependencies":  {
+                         "bcrypt":  "^5.1.1",
+                         "better-sqlite3":  "^12.9.0",
+                         "dotenv":  "^16.4.5",
+                         "ejs":  "^3.1.10",
+                         "express":  "^4.21.2",
+                         "express-rate-limit":  "^8.5.2",
+                         "express-session":  "^1.18.1",
+                         "multer":  "^1.4.5-lts.1",
+                         "nodemailer":  "^6.9.16",
+                         "uuid":  "^10.0.0"
+                     },
+    "engines":  {
+                    "node":  "\u003e=20"
+                },
+    "devDependencies":  {
+                            "supertest":  "^7.2.2",
+                            "vitest":  "^4.1.7"
+                        }
+}
