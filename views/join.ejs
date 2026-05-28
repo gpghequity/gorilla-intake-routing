@@ -1,0 +1,113 @@
+<section class="max-w-3xl mx-auto">
+  <h1 class="text-3xl font-bold">Join Gorilla Realty</h1>
+  <p class="mt-2 text-gorilla-muted">Licensed agents only. Tell us about your business and which plan fits you.</p>
+
+  <form action="/join" method="POST" class="mt-8 space-y-1">
+
+    <section class="bg-gorilla-panel border border-gorilla-border rounded-xl p-6 mb-6">
+      <h2 class="text-lg font-semibold text-gorilla-accent mb-4">Contact</h2>
+      <div class="form-group">
+        <label for="full_name">Full Name *</label>
+        <input type="text" name="full_name" id="full_name" required />
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone *</label>
+        <input type="tel" name="phone" id="phone" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input type="email" name="email" id="email" required />
+      </div>
+    </section>
+
+    <section class="bg-gorilla-panel border border-gorilla-border rounded-xl p-6 mb-6">
+      <h2 class="text-lg font-semibold text-gorilla-accent mb-4">License &amp; Experience</h2>
+      <div class="form-group">
+        <label for="pa_license_number">PA License #</label>
+        <input type="text" name="pa_license_number" id="pa_license_number" />
+      </div>
+      <div class="form-group">
+        <label for="license_status">License Status *</label>
+        <select name="license_status" id="license_status" required>
+          <option value="">— Select —</option>
+          <option value="active">Active</option>
+          <option value="pending">Pending</option>
+          <option value="expired">Expired</option>
+          <option value="none">None</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="current_brokerage">Current Brokerage</label>
+        <input type="text" name="current_brokerage" id="current_brokerage" />
+      </div>
+      <div class="form-group">
+        <label for="years_licensed">Years Licensed</label>
+        <input type="number" name="years_licensed" id="years_licensed" min="0" max="60" />
+      </div>
+      <div class="form-group">
+        <label for="primary_markets">Primary Markets</label>
+        <input type="text" name="primary_markets" id="primary_markets" placeholder="Counties / cities you focus on" />
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="form-group">
+          <label for="transactions_12mo">Transactions (last 12 mo)</label>
+          <input type="number" name="transactions_12mo" id="transactions_12mo" min="0" />
+        </div>
+        <div class="form-group">
+          <label for="gci_12mo">GCI last 12 mo ($, optional)</label>
+          <input type="number" name="gci_12mo" id="gci_12mo" min="0" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Focus (check all that apply)</label>
+        <div class="grid grid-cols-2 gap-2 mt-2">
+          <% const focus = [['retail','Retail'],['investor','Investor'],['wholesaler','Wholesaler'],['new_construction','New Construction'],['commercial','Commercial'],['other','Other']]; %>
+          <% focus.forEach(([val,label]) => { %>
+            <label class="flex items-center gap-2 text-sm cursor-pointer">
+              <input type="checkbox" name="focus" value="<%= val %>" class="w-4 h-4" />
+              <span><%= label %></span>
+            </label>
+          <% }); %>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-gorilla-panel border border-gorilla-border rounded-xl p-6 mb-6">
+      <h2 class="text-lg font-semibold text-gorilla-accent mb-4">Fit</h2>
+      <div class="form-group">
+        <label for="why_gorilla">Why Gorilla?</label>
+        <textarea name="why_gorilla" id="why_gorilla" rows="4" placeholder="What draws you to us? What do you want to build here?"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Plan Interest</label>
+        <div class="space-y-2 mt-2">
+          <label class="flex items-start gap-3 p-3 border border-gorilla-border rounded cursor-pointer hover:border-gorilla-accent">
+            <input type="radio" name="plan_interest" value="plan_a" class="mt-1" />
+            <span><strong>Plan A</strong> — $500 TF + $300 BSF</span>
+          </label>
+          <label class="flex items-start gap-3 p-3 border border-gorilla-border rounded cursor-pointer hover:border-gorilla-accent">
+            <input type="radio" name="plan_interest" value="plan_b" class="mt-1" />
+            <span><strong>Plan B</strong> — 80/20 + $300 BSF</span>
+          </label>
+          <label class="flex items-start gap-3 p-3 border border-gorilla-border rounded cursor-pointer hover:border-gorilla-accent">
+            <input type="radio" name="plan_interest" value="plan_c" class="mt-1" />
+            <span><strong>Plan C</strong> — $1,000 TF + $400 BSF</span>
+          </label>
+          <label class="flex items-start gap-3 p-3 border border-gorilla-border rounded cursor-pointer hover:border-gorilla-accent">
+            <input type="radio" name="plan_interest" value="unsure" class="mt-1" />
+            <span>Not sure yet — let's talk</span>
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="best_time_to_call">Best Time to Call</label>
+        <input type="text" name="best_time_to_call" id="best_time_to_call" placeholder="e.g. Weekdays after 4pm ET" />
+      </div>
+    </section>
+
+    <div class="flex gap-3">
+      <button type="submit" class="btn btn-primary">Submit Application</button>
+      <a href="/" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</section>

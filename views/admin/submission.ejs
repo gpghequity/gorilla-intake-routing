@@ -1,0 +1,191 @@
+<%
+  const payload = JSON.parse(s.payload);
+
+  // Section groupings by submission type
+  const SECTIONS = {
+    buyer: [
+      { title: 'Contact', fields: ['full_name','phone','email','entity_name'] },
+      { title: 'Buy Box', fields: ['property_types','target_markets','price_min','price_max','condition','financing','proof_of_funds','close_speed'] },
+      { title: 'Notes', fields: ['referral_source','notes'] }
+    ],
+    seller: [
+      { title: 'Team Information', fields: ['submitter_name','submitter_role','submitter_phone','submitter_email'] },
+      { title: 'Property Information', fields: ['property_address','property_city','property_state','property_zip','property_type','property_type_other','beds','baths','sqft','lot_size','year_built','occupancy','property_description'] },
+      { title: 'Seller Information', fields: ['seller_name','seller_phone','seller_email','seller_motivation','seller_timeline'] },
+      { title: 'Financial Information', fields: ['asking_price','debt_owed','annual_taxes','annual_insurance','monthly_rent','noi_annual'] },
+      { title: 'Condition & Repairs', fields: ['condition_rating','condition_notes','repair_estimate'] },
+      { title: 'Source / Lead Type', fields: ['lead_source','lead_source_detail'] },
+      { title: 'Notes', fields: ['notes','accept_terms'] }
+    ],
+    agent: [
+      { title: 'Contact', fields: ['full_name','phone','email'] },
+      { title: 'License & Experience', fields: ['pa_license_number','license_status','current_brokerage','years_licensed','primary_markets','transactions_12mo','gci_12mo','focus'] },
+      { title: 'Fit', fields: ['why_gorilla','plan_interest','best_time_to_call'] }
+    ]
+  };
+
+  const LABELS = {
+    full_name:'Full Name', phone:'Phone', email:'Email', entity_name:'Entity Name',
+    property_types:'Property Types', target_markets:'Target Markets',
+    price_min:'Price Min', price_max:'Price Max', condition:'Condition Preference',
+    financing:'Financing', proof_of_funds:'Proof of Funds', close_speed:'Close Speed',
+    referral_source:'Referral Source', notes:'Notes',
+    submitter_name:'Submitter Name', submitter_role:'Submitter Role',
+    submitter_phone:'Submitter Phone', submitter_email:'Submitter Email',
+    property_address:'Address', property_city:'City', property_state:'State', property_zip:'Zip',
+    property_type:'Property Type', property_type_other:'Property Type (Other)',
+    beds:'Beds', baths:'Baths', sqft:'SqFt', lot_size:'Lot Size',
+    year_built:'Year Built', occupancy:'Occupancy', property_description:'Description',
+    seller_name:'Seller Name', seller_phone:'Seller Phone', seller_email:'Seller Email',
+    seller_motivation:'Motivation', seller_timeline:'Timeline',
+    asking_price:'Asking Price', debt_owed:'Debt / Loan Balance',
+    annual_taxes:'Annual Taxes', annual_insurance:'Annual Insurance',
+    monthly_rent:'Monthly Rent', noi_annual:'Annual NOI',
+    condition_rating:'Condition Rating', condition_notes:'Condition Notes',
+    repair_estimate:'Repair Estimate',
+    lead_source:'Lead Source', lead_source_detail:'Lead Source Detail',
+    accept_terms:'Terms Accepted',
+    pa_license_number:'PA License #', license_status:'License Status',
+    current_brokerage:'Current Brokerage', years_licensed:'Years Licensed',
+    primary_markets:'Primary Markets', transactions_12mo:'Transactions (12mo)',
+    gci_12mo:'GCI (12mo)', focus:'Focus',
+    why_gorilla:'Why Gorilla?', plan_interest:'Plan Interest',
+    best_time_to_call:'Best Time to Call'
+  };
+
+  function fmt(v) {
+    if (v === null || v === undefined || v === '') return '—';
+    if (Array.isArray(v)) return v.join(', ');
+    return String(v);
+  }
+%>
+
+<section class="max-w-3xl mx-auto">
+  <a href="/admin" class="text-sm text-gorilla-muted hover:text-gorilla-accent">← Back to dashboard</a>
+
+  <div class="mt-4 flex items-center gap-3 flex-wrap">
+    <h1 class="text-3xl font-bold">
+      <%= s.type === 'buyer' ? 'Buyer Introduction'
+         : s.type === 'seller' ? 'Seller / Deal'
+         : 'Agent Join' %>
+    </h1>
+    <span class="text-xs uppercase tracking-wider font-bold px-2 py-1 rounded bg-gorilla-panel border border-gorilla-border"><%= s.status %></span>
+    <% if (s.listed_flag) { %><span class="text-xs font-bold px-2 py-1 rounded bg-gorilla-danger text-white">⚠ LISTED</span><% } %>
+    <% if (s.storage_flag) { %><span class="text-xs font-bold px-2 py-1 rounded bg-blue-700 text-white">STORAGE</span><% } %>
+  </div>
+  <div class="text-xs text-gorilla-muted mt-1">ID: <%= s.id %> &middot; Submitted <%= s.submitted_at %></div>
+
+  <% if (s.listed_flag) { %>
+    <div class="mt-5 bg-gorilla-dangerBg border-2 border-gorilla-danger rounded-xl p-5 text-sm">
+      <div class="font-bold text-lg text-white mb-2">⚠️ LISTED PROPERTY DETECTED</div>
+      <p class="text-white/90 leading-relaxed">
+        Do not contact seller or listing agent. Bring this deal to Steve and Ryan immediately for review.
+        Listed properties require a decision on pursuit strategy before any contact is made.
+        Agent contact only permitted when acting as licensed buyer's agent with client authorization.
+      </p>
+    </div>
+  <% } %>
+
+  <% if (typeof flash !== 'undefined' && flash) { %>
+    <div class="mt-4 bg-gorilla-panel border border-gorilla-accent rounded px-4 py-2 text-sm text-gorilla-accent"><%= flash %></div>
+  <% } %>
+
+  <!-- Submission Details -->
+  <% (SECTIONS[s.type] || []).forEach(section => { %>
+    <section class="mt-6 bg-gorilla-panel border border-gorilla-border rounded-xl p-6">
+      <h2 class="text-lg font-semibold text-gorilla-accent mb-4"><%= section.title %></h2>
+      <div class="space-y-3">
+        <% section.fields.forEach(f => { %>
+          <div>
+            <div class="text-xs text-gorilla-muted uppercase tracking-wide"><%= LABELS[f] || f %></div>
+            <div class="text-base mt-0.5 break-words whitespace-pre-wrap"><%= fmt(payload[f]) %></div>
+          </div>
+        <% }); %>
+      </div>
+    </section>
+  <% }); %>
+
+  <!-- Uploads -->
+  <% if (uploads && uploads.length > 0) { %>
+    <section class="mt-6 bg-gorilla-panel border border-gorilla-border rounded-xl p-6">
+      <h2 class="text-lg font-semibold text-gorilla-accent mb-4">Attachments</h2>
+      <div class="space-y-2">
+        <% uploads.forEach(u => { %>
+          <div>
+            <a href="<%= u.path %>" target="_blank" class="text-gorilla-accent hover:underline"><%= u.filename %></a>
+            <span class="text-xs text-gorilla-muted ml-2"><%= Math.round((u.size||0)/1024) %> KB</span>
+          </div>
+        <% }); %>
+      </div>
+    </section>
+  <% } %>
+
+  <!-- Routing info -->
+  <section class="mt-6 bg-gorilla-panel border border-gorilla-border rounded-xl p-6">
+    <h2 class="text-lg font-semibold text-gorilla-accent mb-4">Routing</h2>
+    <div class="space-y-3">
+      <div>
+        <div class="text-xs text-gorilla-muted uppercase tracking-wide">Notified</div>
+        <div class="text-base mt-0.5"><%= (notifiedTo && notifiedTo.length) ? notifiedTo.join(', ') : '—' %></div>
+      </div>
+      <div>
+        <div class="text-xs text-gorilla-muted uppercase tracking-wide">Assigned Agent</div>
+        <div class="text-base mt-0.5">
+          <%= assignedAgent ? assignedAgent.full_name + ' (' + assignedAgent.email + ')' : '— unassigned —' %>
+        </div>
+        <div class="text-xs text-gorilla-muted mt-0.5">
+          <%= s.assigned_at ? 'Assigned ' + s.assigned_at : '' %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Actions -->
+  <section class="mt-6 bg-gorilla-panel border border-gorilla-border rounded-xl p-6">
+    <h2 class="text-lg font-semibold text-gorilla-accent mb-4">Broker Actions</h2>
+
+    <form action="/admin/submissions/<%= s.id %>/status" method="POST" class="mb-5">
+      <label for="status">Status</label>
+      <div class="flex gap-2 mt-1">
+        <select name="status" id="status">
+          <% ['new','broker_review','assigned','in_progress','closed'].forEach(st => { %>
+            <option value="<%= st %>" <%= s.status === st ? 'selected' : '' %>><%= st %></option>
+          <% }); %>
+        </select>
+        <button type="submit" class="btn btn-secondary">Update</button>
+      </div>
+    </form>
+
+    <% if (s.type === 'buyer' || s.type === 'seller') { %>
+      <form action="/admin/submissions/<%= s.id %>/assign" method="POST" class="mb-5">
+        <label for="agent_id">Assign to Agent</label>
+        <div class="flex gap-2 mt-1">
+          <select name="agent_id" id="agent_id">
+            <option value="">— Round-robin (next up) —</option>
+            <% (agents || []).forEach(a => { %>
+              <option value="<%= a.id %>" <%= s.assigned_agent_id === a.id ? 'selected' : '' %>>
+                <%= a.full_name %> <%= a.active ? '' : '(inactive)' %>
+              </option>
+            <% }); %>
+          </select>
+          <button type="submit" class="btn btn-primary">Assign</button>
+        </div>
+      </form>
+    <% } %>
+
+    <form action="/admin/submissions/<%= s.id %>/notes" method="POST" class="mb-5">
+      <label for="broker_notes">Broker Notes</label>
+      <textarea name="broker_notes" id="broker_notes" rows="4"><%= s.broker_notes || '' %></textarea>
+      <button type="submit" class="btn btn-secondary mt-2">Save Notes</button>
+    </form>
+
+    <div class="flex gap-2 flex-wrap">
+      <form action="/admin/submissions/<%= s.id %>/close" method="POST">
+        <button type="submit" class="btn btn-secondary">Close Submission</button>
+      </form>
+      <form action="/admin/submissions/<%= s.id %>/delete" method="POST" onsubmit="return confirm('Permanently delete this submission?');">
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </form>
+    </div>
+  </section>
+</section>

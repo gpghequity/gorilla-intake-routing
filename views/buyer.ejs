@@ -1,0 +1,122 @@
+<section class="max-w-3xl mx-auto">
+  <h1 class="text-3xl font-bold">Buyer Introduction</h1>
+  <p class="mt-2 text-gorilla-muted">Share your buy box so we can match you with the right deals from our pipeline.</p>
+
+  <form action="/buyer" method="POST" class="mt-8 space-y-1">
+
+    <section class="bg-gorilla-panel border border-gorilla-border rounded-xl p-6 mb-6">
+      <h2 class="text-lg font-semibold text-gorilla-accent mb-4">Contact</h2>
+
+      <div class="form-group">
+        <label for="full_name">Full Name *</label>
+        <input type="text" name="full_name" id="full_name" required />
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone *</label>
+        <input type="tel" name="phone" id="phone" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input type="email" name="email" id="email" required />
+      </div>
+      <div class="form-group">
+        <label for="entity_name">Entity Name (optional)</label>
+        <input type="text" name="entity_name" id="entity_name" />
+      </div>
+    </section>
+
+    <section class="bg-gorilla-panel border border-gorilla-border rounded-xl p-6 mb-6">
+      <h2 class="text-lg font-semibold text-gorilla-accent mb-4">Buy Box</h2>
+
+      <div class="form-group">
+        <label>Property Types (check all that apply) *</label>
+        <div class="grid grid-cols-2 gap-2 mt-2">
+          <% const types = [['sfr','Single Family'],['multi','Multi-family'],['mhp','Mobile Home Park'],['storage','Self-Storage'],['commercial','Commercial'],['land','Land'],['other','Other']]; %>
+          <% types.forEach(([val,label]) => { %>
+            <label class="flex items-center gap-2 text-sm cursor-pointer">
+              <input type="checkbox" name="property_types" value="<%= val %>" class="w-4 h-4" />
+              <span><%= label %></span>
+            </label>
+          <% }); %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="target_markets">Target Markets (state / county / metro) *</label>
+        <textarea name="target_markets" id="target_markets" rows="3" required></textarea>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="form-group">
+          <label for="price_min">Price Min ($)</label>
+          <input type="number" name="price_min" id="price_min" min="0" />
+        </div>
+        <div class="form-group">
+          <label for="price_max">Price Max ($)</label>
+          <input type="number" name="price_max" id="price_max" min="0" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="condition">Condition Preference</label>
+        <select name="condition" id="condition">
+          <option value="">— Select —</option>
+          <option value="turnkey">Turnkey</option>
+          <option value="light_rehab">Light Rehab</option>
+          <option value="heavy_rehab">Heavy Rehab</option>
+          <option value="any">Any</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="financing">Financing</label>
+        <select name="financing" id="financing">
+          <option value="">— Select —</option>
+          <option value="cash">Cash</option>
+          <option value="hard_money">Hard Money</option>
+          <option value="conventional">Conventional</option>
+          <option value="dscr">DSCR</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="proof_of_funds">Proof of Funds on File?</label>
+        <select name="proof_of_funds" id="proof_of_funds">
+          <option value="">— Select —</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+          <option value="can_provide">I can provide upon request</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="close_speed">How fast can you close?</label>
+        <select name="close_speed" id="close_speed">
+          <option value="">— Select —</option>
+          <option value="7d">7 days</option>
+          <option value="14d">14 days</option>
+          <option value="30d">30 days</option>
+          <option value="30d+">30+ days</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="bg-gorilla-panel border border-gorilla-border rounded-xl p-6 mb-6">
+      <h2 class="text-lg font-semibold text-gorilla-accent mb-4">A Bit More</h2>
+      <div class="form-group">
+        <label for="referral_source">Referral Source</label>
+        <input type="text" name="referral_source" id="referral_source" placeholder="How did you hear about us?" />
+      </div>
+      <div class="form-group">
+        <label for="notes">Anything else we should know?</label>
+        <textarea name="notes" id="notes" rows="4"></textarea>
+      </div>
+    </section>
+
+    <div class="flex gap-3">
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <a href="/" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</section>

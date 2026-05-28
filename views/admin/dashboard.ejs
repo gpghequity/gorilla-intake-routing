@@ -1,0 +1,74 @@
+<section>
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-3xl font-bold">Broker Dashboard</h1>
+      <p class="text-gorilla-muted text-sm">Inbox — latest submissions first</p>
+    </div>
+    <div class="flex gap-2">
+      <a href="/admin/agents" class="btn btn-secondary">Agents</a>
+      <a href="/admin/logout" class="btn btn-secondary">Logout</a>
+    </div>
+  </div>
+
+  <nav class="flex flex-wrap gap-2 mb-6 text-sm">
+    <% const tabs = [
+      { key: 'inbox',   label: 'Inbox' },
+      { key: 'buyer',   label: 'Buyers' },
+      { key: 'seller',  label: 'Sellers' },
+      { key: 'agent',   label: 'Agent Joins' },
+      { key: 'flagged', label: 'Flagged' },
+      { key: 'assigned',label: 'Assigned' },
+      { key: 'closed',  label: 'Closed' }
+    ]; %>
+    <% tabs.forEach(t => { %>
+      <a href="/admin?view=<%= t.key %>"
+         class="px-3 py-1.5 rounded border <%= (typeof view !== 'undefined' && view === t.key) ? 'bg-gorilla-accent text-gorilla-bg border-gorilla-accent' : 'border-gorilla-border text-gorilla-muted hover:border-gorilla-accent hover:text-gorilla-accent' %>">
+        <%= t.label %>
+        <% if (counts && counts[t.key] !== undefined) { %>
+          <span class="ml-1 opacity-75">(<%= counts[t.key] %>)</span>
+        <% } %>
+      </a>
+    <% }); %>
+  </nav>
+
+  <% if (submissions.length === 0) { %>
+    <div class="bg-gorilla-panel border border-gorilla-border rounded-xl p-10 text-center text-gorilla-muted">
+      No submissions in this view.
+    </div>
+  <% } else { %>
+    <div class="space-y-3">
+      <% submissions.forEach(s => {
+        const payload = JSON.parse(s.payload);
+        const typeColors = { buyer: 'border-l-blue-500', seller: 'border-l-emerald-500', agent: 'border-l-purple-500' };
+        const edge = typeColors[s.type] || 'border-l-gorilla-border';
+        const who = payload.full_name || payload.submitter_name || payload.seller_name || payload.email || payload.submitter_email || '—';
+        const prop = payload.property_address
+          ? [payload.property_address, payload.property_city, payload.property_state].filter(Boolean).join(', ')
+          : null;
+      %>
+        <a href="/admin/submissions/<%= s.id %>"
+           class="block bg-gorilla-panel border border-gorilla-border border-l-4 <%= edge %> rounded-lg px-5 py-4 hover:border-gorilla-accent transition">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center gap-3 flex-wrap">
+              <span class="text-xs uppercase tracking-wider font-bold px-2 py-0.5 rounded bg-gorilla-bg border border-gorilla-border"><%= s.type %></span>
+              <% if (s.listed_flag) { %><span class="text-xs font-bold px-2 py-0.5 rounded bg-gorilla-danger text-white">⚠ LISTED</span><% } %>
+              <% if (s.storage_flag) { %><span class="text-xs font-bold px-2 py-0.5 rounded bg-blue-700 text-white">STORAGE</span><% } %>
+              <span class="text-xs px-2 py-0.5 rounded border border-gorilla-border text-gorilla-muted"><%= s.status %></span>
+            </div>
+            <span class="text-xs text-gorilla-muted"><%= s.submitted_at %></span>
+          </div>
+          <div class="mt-2 text-base font-semibold"><%= who %></div>
+          <% if (prop) { %>
+            <div class="text-sm text-gorilla-muted"><%= prop %></div>
+          <% } %>
+          <% if (payload.target_markets) { %>
+            <div class="text-sm text-gorilla-muted">Markets: <%= payload.target_markets %></div>
+          <% } %>
+          <% if (s.assigned_agent_name) { %>
+            <div class="text-xs text-gorilla-muted mt-1">Assigned to: <%= s.assigned_agent_name %></div>
+          <% } %>
+        </a>
+      <% }); %>
+    </div>
+  <% } %>
+</section>

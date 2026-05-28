@@ -1,0 +1,266 @@
+<section class="max-w-3xl mx-auto">
+  <h1 class="text-3xl font-bold">Seller / Deal Submission</h1>
+  <p class="mt-2 text-gorilla-muted">Team and sellers: submit a property here. Every field helps us route and price correctly.</p>
+
+  <form action="/seller" method="POST" enctype="multipart/form-data" class="mt-8 space-y-1">
+
+    <!-- Team Information -->
+    <section class="bg-gorilla-panel border border-gorilla-border rounded-xl p-6 mb-6">
+      <h2 class="text-lg font-semibold text-gorilla-accent mb-4">1. Team Information</h2>
+      <div class="form-group">
+        <label for="submitter_name">Your Name *</label>
+        <input type="text" name="submitter_name" id="submitter_name" required />
+      </div>
+      <div class="form-group">
+        <label for="submitter_role">Your Role</label>
+        <select name="submitter_role" id="submitter_role">
+          <option value="">— Select —</option>
+          <option value="acquisitions">Acquisitions</option>
+          <option value="dispositions">Dispositions</option>
+          <option value="agent">Agent</option>
+          <option value="seller">I am the Seller</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="submitter_phone">Your Phone *</label>
+        <input type="tel" name="submitter_phone" id="submitter_phone" required />
+      </div>
+      <div class="form-group">
+        <label for="submitter_email">Your Email *</label>
+        <input type="email" name="submitter_email" id="submitter_email" required />
+      </div>
+    </section>
+
+    <!-- Property Information -->
+    <section class="bg-gorilla-panel border border-gorilla-border rounded-xl p-6 mb-6">
+      <h2 class="text-lg font-semibold text-gorilla-accent mb-4">2. Property Information</h2>
+      <div class="form-group">
+        <label for="property_address">Property Address *</label>
+        <input type="text" name="property_address" id="property_address" required />
+      </div>
+      <div class="grid grid-cols-3 gap-4">
+        <div class="form-group">
+          <label for="property_city">City</label>
+          <input type="text" name="property_city" id="property_city" />
+        </div>
+        <div class="form-group">
+          <label for="property_state">State</label>
+          <input type="text" name="property_state" id="property_state" maxlength="2" />
+        </div>
+        <div class="form-group">
+          <label for="property_zip">Zip</label>
+          <input type="text" name="property_zip" id="property_zip" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="property_type">Property Type *</label>
+        <select name="property_type" id="property_type" required>
+          <option value="">— Select —</option>
+          <option value="sfr">Single Family</option>
+          <option value="duplex">Duplex</option>
+          <option value="triplex">Triplex</option>
+          <option value="fourplex">Fourplex</option>
+          <option value="multi_5plus">Multi-family (5+)</option>
+          <option value="mhp">Mobile Home Park</option>
+          <option value="self_storage">Self-Storage</option>
+          <option value="commercial">Commercial</option>
+          <option value="land">Land</option>
+          <option value="mixed_use">Mixed Use</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="property_type_other">If Other, describe</label>
+        <input type="text" name="property_type_other" id="property_type_other" />
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="form-group">
+          <label for="beds">Beds</label>
+          <input type="number" name="beds" id="beds" min="0" />
+        </div>
+        <div class="form-group">
+          <label for="baths">Baths</label>
+          <input type="number" step="0.5" name="baths" id="baths" min="0" />
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="form-group">
+          <label for="sqft">Square Feet</label>
+          <input type="number" name="sqft" id="sqft" min="0" />
+        </div>
+        <div class="form-group">
+          <label for="lot_size">Lot Size</label>
+          <input type="text" name="lot_size" id="lot_size" placeholder="e.g. 0.25 acre" />
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="form-group">
+          <label for="year_built">Year Built</label>
+          <input type="number" name="year_built" id="year_built" min="1800" max="2100" />
+        </div>
+        <div class="form-group">
+          <label for="occupancy">Occupancy</label>
+          <select name="occupancy" id="occupancy">
+            <option value="">— Select —</option>
+            <option value="vacant">Vacant</option>
+            <option value="owner_occupied">Owner Occupied</option>
+            <option value="tenant_occupied">Tenant Occupied</option>
+            <option value="mixed">Mixed</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="property_description">Property Description</label>
+        <textarea name="property_description" id="property_description" rows="3"></textarea>
+      </div>
+    </section>
+
+    <!-- Seller Information -->
+    <section class="bg-gorilla-panel border border-gorilla-border rounded-xl p-6 mb-6">
+      <h2 class="text-lg font-semibold text-gorilla-accent mb-4">3. Seller Information</h2>
+      <div class="form-group">
+        <label for="seller_name">Seller Name</label>
+        <input type="text" name="seller_name" id="seller_name" />
+      </div>
+      <div class="form-group">
+        <label for="seller_phone">Seller Phone</label>
+        <input type="tel" name="seller_phone" id="seller_phone" />
+      </div>
+      <div class="form-group">
+        <label for="seller_email">Seller Email</label>
+        <input type="email" name="seller_email" id="seller_email" />
+      </div>
+      <div class="form-group">
+        <label for="seller_motivation">Motivation</label>
+        <textarea name="seller_motivation" id="seller_motivation" rows="3" placeholder="Why are they selling? Timeline pressure?"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="seller_timeline">Timeline to Close</label>
+        <select name="seller_timeline" id="seller_timeline">
+          <option value="">— Select —</option>
+          <option value="asap">ASAP</option>
+          <option value="30d">Within 30 days</option>
+          <option value="60d">Within 60 days</option>
+          <option value="90d">Within 90 days</option>
+          <option value="flexible">Flexible</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Financial Information -->
+    <section class="bg-gorilla-panel border border-gorilla-border rounded-xl p-6 mb-6">
+      <h2 class="text-lg font-semibold text-gorilla-accent mb-4">4. Financial Information</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="form-group">
+          <label for="asking_price">Asking Price ($)</label>
+          <input type="number" name="asking_price" id="asking_price" min="0" />
+        </div>
+        <div class="form-group">
+          <label for="debt_owed">Total Debt / Loan Balance ($)</label>
+          <input type="number" name="debt_owed" id="debt_owed" min="0" />
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="form-group">
+          <label for="annual_taxes">Annual Taxes ($)</label>
+          <input type="number" name="annual_taxes" id="annual_taxes" min="0" />
+        </div>
+        <div class="form-group">
+          <label for="annual_insurance">Annual Insurance ($)</label>
+          <input type="number" name="annual_insurance" id="annual_insurance" min="0" />
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="form-group">
+          <label for="monthly_rent">Monthly Rent (if rental, $)</label>
+          <input type="number" name="monthly_rent" id="monthly_rent" min="0" />
+        </div>
+        <div class="form-group">
+          <label for="noi_annual">Annual NOI ($)</label>
+          <input type="number" name="noi_annual" id="noi_annual" min="0" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Condition & Repairs -->
+    <section class="bg-gorilla-panel border border-gorilla-border rounded-xl p-6 mb-6">
+      <h2 class="text-lg font-semibold text-gorilla-accent mb-4">5. Condition &amp; Repairs</h2>
+      <div class="form-group">
+        <label for="condition_rating">Overall Condition</label>
+        <select name="condition_rating" id="condition_rating">
+          <option value="">— Select —</option>
+          <option value="turnkey">Turnkey</option>
+          <option value="light">Light Rehab</option>
+          <option value="moderate">Moderate Rehab</option>
+          <option value="heavy">Heavy Rehab</option>
+          <option value="gut">Gut / Teardown</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="condition_notes">Condition Notes (narrative)</label>
+        <textarea name="condition_notes" id="condition_notes" rows="4" placeholder="Describe condition, known issues, systems, roof age, mechanicals..."></textarea>
+      </div>
+      <div class="form-group">
+        <label for="repair_estimate">Team Repair Estimate ($)</label>
+        <input type="number" name="repair_estimate" id="repair_estimate" min="0" />
+      </div>
+    </section>
+
+    <!-- Source / Lead Type -->
+    <section class="bg-gorilla-panel border border-gorilla-border rounded-xl p-6 mb-6">
+      <h2 class="text-lg font-semibold text-gorilla-accent mb-4">6. Source / Lead Type</h2>
+      <div class="form-group">
+        <label for="lead_source">How did we find this deal?</label>
+        <select name="lead_source" id="lead_source">
+          <option value="">— Select —</option>
+          <option value="cold_call">Cold Call</option>
+          <option value="driving_for_dollars">Driving for Dollars</option>
+          <option value="referral">Referral</option>
+          <option value="mls">MLS</option>
+          <option value="direct_mail">Direct Mail</option>
+          <option value="ppc">PPC / Online Ad</option>
+          <option value="wholesaler">Wholesaler</option>
+          <option value="walk_in">Walk-in / Sign</option>
+          <option value="auction">Auction</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="lead_source_detail">Source details</label>
+        <input type="text" name="lead_source_detail" id="lead_source_detail" placeholder="Campaign, referrer name, etc." />
+      </div>
+    </section>
+
+    <!-- Photos / Attachments -->
+    <section class="bg-gorilla-panel border border-gorilla-border rounded-xl p-6 mb-6">
+      <h2 class="text-lg font-semibold text-gorilla-accent mb-4">7. Photos &amp; Attachments</h2>
+      <div class="form-group">
+        <label for="uploads">Upload up to 12 files (photos, docs)</label>
+        <input type="file" name="uploads" id="uploads" multiple class="text-gorilla-muted" />
+      </div>
+      <div class="form-group">
+        <label for="notes">Other Notes</label>
+        <textarea name="notes" id="notes" rows="3"></textarea>
+      </div>
+    </section>
+
+    <!-- Terms -->
+    <section class="bg-gorilla-panel border border-gorilla-border rounded-xl p-6 mb-6">
+      <label class="flex items-start gap-3 cursor-pointer">
+        <input type="checkbox" name="accept_terms" value="yes" required class="mt-1 w-4 h-4" />
+        <span class="text-sm text-gorilla-muted">
+          I Accept — I confirm the information provided is accurate to the best of my knowledge. I understand
+          Gorilla Realty / Good People Good Homes may follow up regarding this property. If this property is
+          currently listed with another brokerage, I understand our team will not contact the seller directly
+          and will route the deal to the broker for review.
+        </span>
+      </label>
+    </section>
+
+    <div class="flex gap-3">
+      <button type="submit" class="btn btn-primary">Submit Deal</button>
+      <a href="/" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</section>
