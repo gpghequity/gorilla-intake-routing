@@ -40,8 +40,9 @@ app.use(session({
 app.use('/admin', adminRoutes);
 app.use('/', publicRoutes);
 
-// Health check
-app.get('/_health', (_req, res) => res.json({ ok: true }));
+// Health check (both paths for auditor compatibility)
+app.get('/_health', (_req, res) => res.json({ ok: true, service: 'gorilla-intake-routing' }));
+app.get('/healthz', (_req, res) => res.json({ ok: true, service: 'gorilla-intake-routing' }));
 
 // 404
 app.use((req, res) => {
