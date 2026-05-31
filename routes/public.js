@@ -7,6 +7,7 @@ const crypto = require('crypto');
 const db = require('../db/init');
 const { detectListed, detectStorage } = require('../lib/routing');
 const email = require('../lib/email');
+const sheets = require('../lib/sheetsLogger');
 
 const router = express.Router();
 
@@ -107,6 +108,11 @@ router.post('/buyer', express.urlencoded({ extended: true }), (req, res) => {
     storageFlag: false
   });
   fireEmail(submission);
+  // Fire-and-forget — Sheets write must never block the response
+  // Pass parsed payload object (submission.payload in DB is a JSON string)
+  sheets.logBuyer({ ...submission, payload }).catch(err =>
+    console.error('[public] sheets.logBuyer error:', err.message)
+  );
   res.render('layout', { page: 'thanks', title: 'Thanks — Gorilla Realty', reference: submission.id });
 });
 
@@ -130,6 +136,10 @@ router.post('/seller', upload.array('uploads', 12), (req, res) => {
 
   insertUploads(submission.id, req.files);
   fireEmail(submission);
+  // Fire-and-forget — Sheets write must never block the response
+  sheets.logSeller({ ...submission, payload }).catch(err =>
+    console.error('[public] sheets.logSeller error:', err.message)
+  );
 
   res.render('layout', { page: 'thanks', title: 'Thanks — Gorilla Realty', reference: submission.id });
 });
@@ -149,6 +159,10 @@ router.post('/join', express.urlencoded({ extended: true }), (req, res) => {
     storageFlag: false
   });
   fireEmail(submission);
+  // Fire-and-forget — Sheets write must never block the response
+  sheets.logAgent({ ...submission, payload }).catch(err =>
+    console.error('[public] sheets.logAgent error:', err.message)
+  );
   res.render('layout', { page: 'thanks', title: 'Thanks — Gorilla Realty', reference: submission.id });
 });
 
